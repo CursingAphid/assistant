@@ -91,6 +91,44 @@ The `n8n_trigger.py` script provides several methods:
 - **Scheduled Tasks**: Trigger workflows from Python cron jobs
 - **API Integration**: Use n8n as a middleware between Python and external APIs
 - **Automation**: Trigger complex workflows from simple Python scripts
+- **Price Monitoring**: Check Albert Heijn product prices automatically
+
+## 🛒 Albert Heijn Price Checker
+
+This project includes a complete Albert Heijn price checking system with multiple approaches:
+
+### Available Scripts
+
+1. **`ah_price_checker_demo.py`** - Demo version with mock data (recommended for testing)
+2. **`ah_price_checker.py`** - Basic web scraping version
+3. **`ah_price_checker_v2.py`** - Advanced version with multiple fallback methods
+4. **`albert_heijn_scraper.py`** - Full-featured scraper class
+5. **`ah_n8n_client.py`** - Client to trigger n8n workflows
+
+### Quick Start
+
+```bash
+# Test the demo version
+python3 ah_price_checker_demo.py "melk"
+
+# Test the n8n integration
+python3 ah_n8n_client.py "melk"
+```
+
+### n8n Workflow Setup
+
+1. **Import the workflow**: Import `albert_heijn_workflow.json` into n8n
+2. **Activate the workflow**: Toggle the switch to green
+3. **Test with Python**: Run `python3 ah_n8n_client.py "product_name"`
+
+### Supported Products (Demo)
+
+The demo version includes mock data for:
+- melk (milk) - €1.89
+- brood (bread) - €1.25  
+- kaas (cheese) - €3.45
+- eieren (eggs) - €2.15
+- appels (apples) - €2.99
 
 ### Features
 - Workflow automation
