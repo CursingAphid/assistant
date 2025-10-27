@@ -1,143 +1,207 @@
-# Assistant - n8n Workflow Automation
+# 🛒 Albert Heijn Price Checker
 
-This repository contains an n8n installation for workflow automation and AI assistant capabilities, with Python integration examples.
+A comprehensive Python project for checking Albert Heijn product prices with multiple interfaces and database capabilities.
 
-## Getting Started
+## ✨ Features
+
+- **Real-time price checking** from Albert Heijn website
+- **Beautiful Streamlit web interface** with autocomplete
+- **Complete website price scanner** with database storage
+- **SQLite database** with price history tracking
+- **n8n workflow integration** for automation
+- **Python API** for programmatic access
+- **Demo data** for testing and development
+
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js (v18 or higher)
-- npm
-- Python 3.7+
+- Python 3.9+ (required for modern type hints like tuple[...])
+- Node.js (for n8n integration)
 
 ### Installation
-The project dependencies are already installed. To start n8n:
 
-```bash
-npm start
-```
-
-This will start the n8n server, typically accessible at `http://localhost:5678`.
-
-### Python Integration
-
-#### Install Python Dependencies
+1. **Install Python dependencies:**
 ```bash
 pip install -r requirements.txt
 ```
 
-#### Triggering Workflows from Python
-
-There are several ways to trigger n8n workflows from Python:
-
-##### 1. Webhook Method (Recommended)
-The simplest way is to use webhooks. Create a workflow in n8n with a Webhook trigger node, then use Python to send data to it.
-
-```python
-import requests
-import json
-
-# Send data to n8n webhook
-webhook_url = "http://localhost:5678/webhook/your-webhook-path"
-data = {"message": "Hello from Python!", "value": 42}
-
-response = requests.post(webhook_url, json=data)
-print(response.json())
-```
-
-##### 2. Using the Provided Scripts
-
-**Simple Trigger (`simple_trigger.py`):**
+2. **Start n8n (optional):**
 ```bash
-python simple_trigger.py
+npm start
 ```
+Access n8n at http://localhost:5678
 
-**Advanced Trigger (`n8n_trigger.py`):**
-```bash
-python n8n_trigger.py
-```
+## 🖥️ Interfaces
 
-##### 3. Sample Workflow
-Import the `sample_workflow.json` into n8n to test the Python integration:
-1. Open n8n at `http://localhost:5678`
-2. Click "Import from file"
-3. Select `sample_workflow.json`
-4. Activate the workflow
-5. Run `python simple_trigger.py` to test
+The previous Streamlit UI and related scripts are not part of this refactor. Current focus is on scrapers and database.
 
-### Workflow Creation Steps
+### App Features
 
-1. **Start n8n server** with `npm start`
-2. **Open n8n interface** at `http://localhost:5678`
-3. **Create a new workflow**:
-   - Add a "Webhook" node as the trigger
-   - Configure the webhook path (e.g., "python-trigger")
-   - Add processing nodes (Set, HTTP Request, etc.)
-   - Add a "Respond to Webhook" node to return data
-4. **Activate the workflow**
-5. **Test with Python** using the provided scripts
+1. **Search Interface**: Type any product name to check prices
+2. **Quick Buttons**: One-click search for melk, brood, kaas, eieren, appels, yoghurt
+3. **Search History**: View and repeat previous searches
+4. **Real-time Results**: Live price checking with Albert Heijn
+5. **Settings Panel**: Choose scraping method and auto-refresh options
+6. **Responsive Design**: Works on desktop, tablet, and mobile
+7. **Find Cheapest**: Button to find cheapest products across all categories
 
-### API Methods
+## 🗄️ Database and Scrapers
 
-The `n8n_trigger.py` script provides several methods:
+Tools to scrape AH categories/brands and store prices in an SQLite database at `grocery_database.db`.
 
-- `trigger_webhook_workflow()` - Trigger via webhook
-- `trigger_workflow_by_id()` - Trigger by workflow ID
-- `get_workflows()` - List all workflows
-- `get_workflow_executions()` - Get execution history
-
-### Example Use Cases
-
-- **Data Processing**: Send data from Python scripts to n8n for processing
-- **Scheduled Tasks**: Trigger workflows from Python cron jobs
-- **API Integration**: Use n8n as a middleware between Python and external APIs
-- **Automation**: Trigger complex workflows from simple Python scripts
-- **Price Monitoring**: Check Albert Heijn product prices automatically
-
-## 🛒 Albert Heijn Price Checker
-
-This project includes a complete Albert Heijn price checking system with multiple approaches:
-
-### Available Scripts
-
-1. **`ah_price_checker_demo.py`** - Demo version with mock data (recommended for testing)
-2. **`ah_price_checker.py`** - Basic web scraping version
-3. **`ah_price_checker_v2.py`** - Advanced version with multiple fallback methods
-4. **`albert_heijn_scraper.py`** - Full-featured scraper class
-5. **`ah_n8n_client.py`** - Client to trigger n8n workflows
-
-### Quick Start
+### Usage
 
 ```bash
-# Test the demo version
-python3 ah_price_checker_demo.py "melk"
+# Clear DB tables (keeps schema)
+python3 backend/utils/clear_database.py
 
-# Test the n8n integration
-python3 ah_n8n_client.py "melk"
+# Run AH comprehensive scraper (example; see script docstring for details)
+# python3 backend/scrapers/AH/ah_comprehensive_scraper.py --db ./grocery_database.db
+
+# Run Selenium scraper for AH brands (example)
+# python3 backend/scrapers/AH/ah_selenium_scraper.py --db ./grocery_database.db
 ```
-
-### n8n Workflow Setup
-
-1. **Import the workflow**: Import `albert_heijn_workflow.json` into n8n
-2. **Activate the workflow**: Toggle the switch to green
-3. **Test with Python**: Run `python3 ah_n8n_client.py "product_name"`
-
-### Supported Products (Demo)
-
-The demo version includes mock data for:
-- melk (milk) - €1.89
-- brood (bread) - €1.25  
-- kaas (cheese) - €3.45
-- eieren (eggs) - €2.15
-- appels (apples) - €2.99
 
 ### Features
-- Workflow automation
-- AI-powered assistant capabilities
-- Integration with various services and APIs
-- Visual workflow builder
-- Python integration examples
-- Webhook triggers
-- REST API access
 
-## License
-ISC
+- **🔍 Complete Website Scan** - Scans all Albert Heijn categories
+- **💾 SQLite Database** - Stores all products with prices, brands, categories
+- **📊 Price History** - Tracks price changes over time
+- **🏷️ Category Analysis** - Organizes products by category
+- **🏢 Brand Analysis** - Groups products by brand
+- **📈 Data Analytics** - Comprehensive analysis tools
+- **📤 Export Options** - Export data to CSV
+- **🔄 Incremental Updates** - Update existing products
+
+### Database Schema
+
+**Products Table:**
+- Product name, brand, category
+- Current price, unit price
+- Product URL, image URL
+- Availability, discount info
+- Creation/update timestamps
+
+**Price History Table:**
+- Historical price data
+- Price change tracking
+- Scan timestamps
+
+**Categories Table:**
+- Category information
+- Product counts
+- Last scan timestamps
+
+### Scanner Capabilities
+
+1. **Multi-Strategy Scanning** - Uses different URL patterns to find all products
+2. **Duplicate Prevention** - Avoids storing duplicate products
+3. **Price Change Tracking** - Records price history for analysis
+4. **Error Handling** - Robust error handling and logging
+5. **Progress Tracking** - Real-time progress updates
+6. **Respectful Scraping** - Rate limiting and delays
+
+### Analysis
+
+You can inspect the SQLite DB directly (e.g., with DB Browser for SQLite) or add your own analysis scripts.
+
+**Analysis Features:**
+- Database statistics and overview
+- Product search functionality
+- Cheapest/most expensive products
+- Category and brand analysis
+- Price distribution analysis
+- Price history tracking
+- CSV export capabilities
+
+### Example Usage
+
+```bash
+# Start complete scan (may take hours)
+python3 run_scanner.py
+# Choose option 1
+
+# Analyze results
+python3 run_scanner.py
+# Choose option 2
+
+# Quick stats
+python3 run_scanner.py
+# Choose option 3
+```
+
+## 🔧 Python API
+
+The previous ad-hoc API helpers referenced here were removed in this refactor.
+
+## 🔗 n8n Integration
+
+Use `npm start` to launch n8n. Any previous example workflow/client files were removed.
+
+## 📁 Project Structure (key files)
+
+```
+backend/
+  utils/
+    clear_database.py
+  scrapers/
+    AH/
+      ah_comprehensive_scraper.py
+      ah_selenium_scraper.py
+    Aldi/
+      aldi_comprehensive_scraper.py
+grocery_database.db
+requirements.txt
+package.json
+README.md
+```
+
+## 🎯 Use Cases
+
+- **Price comparison** across categories
+- **Finding cheapest products** in each category
+- **Brand analysis** and pricing strategies
+- **Historical price tracking** and trends
+- **Data analysis** and insights
+- **Budget shopping** optimization
+- **Workflow automation** with n8n
+
+## 📊 Example Results
+
+### Streamlit Interface
+- Real-time price checking with autocomplete
+- Search history and statistics
+- Beautiful responsive design
+- Find cheapest products feature
+
+### Database Scanner
+```
+📊 Database Overview:
+Total products: 15,432
+Categories: 20
+Brands: 1,247
+Products with prices: 15,432
+Price range: €0.85 - €89.99
+Average price: €3.47
+Recent scan days: 7
+
+🏷️ Top Categories by Product Count:
+  Groente & Fruit: 2,156 products (avg: €2.34)
+  Melk & Zuivel: 1,847 products (avg: €2.89)
+  Brood & Banket: 1,234 products (avg: €1.95)
+  ...
+```
+
+## 🚀 Getting Started
+
+1. Install dependencies: `pip install -r requirements.txt`
+2. (Optional) Start n8n: `npm start`
+3. Use the scrapers in `backend/utils/scrapers/AH` to populate `grocery_database.db`
+
+## 📝 License
+
+This project is for educational and personal use. Please respect Albert Heijn's terms of service when using the scraping functionality.
+
+## 🤝 Contributing
+
+Feel free to submit issues and enhancement requests!
